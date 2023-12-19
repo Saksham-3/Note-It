@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user
-from .models import Note
+from .models import Note, User
 from . import db
 import json
 
@@ -9,16 +9,6 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    if request.method == 'POST':
-        note = request.form.get('note')
-
-        if len(note) < 1: 
-            flash('Note is too short!', category= 'error')
-        else:
-            new_note = Note(data=note, user_id= current_user.id)
-            db.session.add(new_note)
-            db.session.commit()
-            flash('Note added!', category= 'success')
     return render_template("home.html", user = current_user)
 
 @views.route('/delete-note', methods= ['POST'])
@@ -32,3 +22,35 @@ def delete_note():
             db.session.commit()
             
     return jsonify({})
+
+@views.route('/add_note', methods = ['GET', 'POST'])
+@login_required
+def addNote():
+    if request.method == 'POST':
+        note = request.form.get('note')
+
+        if len(note) < 1: 
+            flash('Note is too short!', category= 'error')
+        else:
+            new_note = Note(data=note, user_id= current_user.id)
+            db.session.add(new_note)
+            db.session.commit()
+            flash('Note added!', category= 'success')
+    return render_template("add_note.html", user=current_user)
+
+@views.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit(id):
+    form = Note()
+    note_update = User.query.get_or_404(id)
+    if request.method == "POST":
+        note_update.note = request.form['note']
+        try:
+            db.session.commit()
+            flash("Note Successfully Updated!")
+            return render_template("edit.html", form=form, note_update = note_update)
+        except:
+            db.session.commit()
+            flash("Error! Try again.")
+            return render_template("edit.html", form=form, note_update = note_update)
+    else:
+        return render_template("edit.html", form=form, note_update = note_update)
