@@ -39,18 +39,18 @@ def addNote():
     return render_template("add_note.html", user=current_user)
 
 @views.route('/edit/<int:id>', methods=['GET', 'POST'])
-def edit(id):
+def item(id):
     form = Note()
-    note_update = User.query.get_or_404(id)
+    note_update = Note.query.get_or_404(id)
     if request.method == "POST":
-        note_update.note = request.form['note']
+        note_update.data = request.form['note']
         try:
             db.session.commit()
             flash("Note Successfully Updated!")
-            return render_template("edit.html", form=form, note_update = note_update)
+            return render_template("edit.html", form=form, note_update = note_update, user = current_user)
         except:
             db.session.commit()
             flash("Error! Try again.")
             return render_template("edit.html", form=form, note_update = note_update)
     else:
-        return render_template("edit.html", form=form, note_update = note_update)
+        return render_template("edit.html", form=form, note_update = note_update, user = current_user)
