@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block title %}Edit Note{% endblock %} {% block
 content%}
 <h1 align="center">Edit Note</h1>
+<h2 align="center">Created on {{ note_update.date }}</h2>
 
 <form action="/edit/{{ note_update.id }}" method="POST">
   <textarea name="note" id="note" class="form-control">
@@ -8,13 +9,15 @@ content%}
   >
   <br />
   <div align="center">
-    <button type="submit" class="btn btn-primary">Save Note</button>
-  </div>
-  <br />
-  <div align="center">
     <a href="{{ url_for('views.home') }}"
-      ><button class="btn btn-primary">Cancel</button></a
+      ><button type="submit" class="btn btn-primary">Save Note</button></a
     >
   </div>
+  <br />
 </form>
+<div align="center">
+  <a href="{{ url_for('views.home') }}"
+    ><button class="btn btn-secondary">Cancel</button></a
+  >
+</div>
 {% endblock %}

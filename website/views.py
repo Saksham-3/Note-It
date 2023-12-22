@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from .models import Note, User
 from . import db
 import json
+from .forms import UpdateAccount
 
 views = Blueprint('views', __name__)
 
@@ -34,7 +35,7 @@ def addNote():
         else:
             new_note = Note(data=note, user_id= current_user.id)
             db.session.add(new_note)
-            db.session.commit()
+            db.session.commit() 
             flash('Note added!', category= 'success')
     return render_template("add_note.html", user=current_user)
 
@@ -46,11 +47,27 @@ def item(id):
         note_update.data = request.form['note']
         try:
             db.session.commit()
-            flash("Note Successfully Updated!")
-            return render_template("edit.html", form=form, note_update = note_update, user = current_user)
+            flash("Note Successfully Updated!", "success")
+            return render_template("home.html", form=form, note_update = note_update, user = current_user)
         except:
             db.session.commit()
-            flash("Error! Try again.")
+            flash("Error! Try again.", "error")
             return render_template("edit.html", form=form, note_update = note_update)
     else:
         return render_template("edit.html", form=form, note_update = note_update, user = current_user)
+    
+@views.route('/account/', methods=['GET', 'POST'])
+@login_required
+def account():
+    form = UpdateAccount()
+    if form.validate_on_submit():
+        current_user.first_name = form.first_name.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Your account information has been updated!', 'success')
+        return redirect(url_for('views.account'))
+    elif request.method == 'GET':
+        form.first_name.data = current_user.first_name
+        form.email.data = current_user.email
+
+    return render_template('account.html', user= current_user, form=form)
