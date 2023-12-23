@@ -1,0 +1,18 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+.container{
+    margin: 50px auto;
+    max-width: 500px;
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+}
+form{
+    display: flex;
+    flex-direction: column;
+}
+

@@ -1,39 +1,86 @@
 {% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
 %}
+<head><link rel="stylesheet" type="text/css" href="\static\login.css" /></head>
+<div class="div-container">
+  <form method="POST" action="" novalidate>
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4">Log In</legend>
+      <div class="form-group">
+        {{ form.email.label(class="form-control-label") }}
+          {% if form.email.errors %}
+          {{form.email(class="form-control form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.email.errors %}
+              <span>{{ error }}</span>          
+            {% endfor %}
+          </div>
+        {% else %}
+          {{form.email(class="form-control form-control-lg") }}
+        {% endif %}
+      </div>
+      <div class="form-group">
+        {{ form.password.label(class="form-control-label") }} 
+        {% if form.password.errors %}
+          {{form.password(class="form-control form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.password.errors %}
+              <span>{{ error }}</span>          
+            {% endfor %}
+          </div>
+        {% else %}
+          {{form.password(class="form-control form-control-lg") }}
+        {% endif %}
+      </div>
+      <div class="form-check">
+        {{ form.remember(class="form-check-input") }}
+        {{ form.remember.label(class="form-check-label") }}
+      </div>
+    </fieldset>
+    <div class="form-group">{{ form.submit(class="btn btn-outline-info")}}</div>
+    <small class="text-muted">
+      <a href="">Forgot Password?</a>
+    </small>
+  </form>
+</div>
+<div class="border-top pt-3">
+  <small class="text-muted">
+    Don't Have an Account? <a href=" {{ url_for('auth.sign_up')}}">Sign Up Now!</a> 
+  </small>
+</div>
+
+<!--
 <div
-  class="content-section"
-  style="
-    background: #ffffff;
-    padding: 10px 20px;
-    border: 1px solid #dddddd;
-    border-radius: 3px;
-    margin-top: 20px;
-  "
+  class="div-container"
 >
-<form method="POST">
+  <form method="POST" class="form">
     <h3 align="center">Login</h3>
     <div class="form-group" >
-      <label for="email">Email Address</label>
+      <label for="email">Email:</label>
       <input
         type="email"
         class="form-control"
         id="email"
         name="email"
         placeholder="Enter email"
-        
+        required
       />
     </div>
     <div class="form-group">
-      <label for="password">Password</label>
+      <label for="password">Password:</label>
       <input
         type="password"
         class="form-control"
         id="password"
         name="password"
         placeholder="Enter password"
+        required
       />
     <br />
-    <button type="submit" class="btn btn-primary">Login</button>
+    <button type="submit" class="button"
+      >Login</button>
   </form>
 </div>
+<head><link rel="stylesheet" type="text/css" href="\static\login.css" /></head>
+
 {% endblock %}

@@ -17,7 +17,7 @@ content%}
       style="height: 100px; width: 100px; margin-right: 15px"
     />
     <div class="media-body">
-      <h2 class="account-heading">{{ current_user.first_name }}</h2>
+      <h2 class="account-heading">{{ current_user.username }}</h2>
       <p class="text-secondary">{{ current_user.email }}</p>
     </div>
   </div>
@@ -27,15 +27,15 @@ content%}
       <fieldset class="form-group">
         <legend class="border-bottom mb-4">Account Info</legend>
         <div class="form-group">
-          {{ form.first_name.label(class="form-control-label") }} {% if
-          form.first_name.errors %} {{ form.first_name(class="form-control
+          {{ form.username.label(class="form-control-label") }} {% if
+          form.username.errors %} {{ form.username(class="form-control
           form-control-lg is-invalid") }}
           <div class="invalid-feedback">
-            {% for error in form.first_name.errors %}
+            {% for error in form.username.errors %}
             <span>{{ error }}</span>
             {% endfor %}
           </div>
-          {% else %} {{ form.first_name(class="form-control form-control-lg") }}
+          {% else %} {{ form.username(class="form-control form-control-lg") }}
           {% endif %}
         </div>
         <div class="form-group">

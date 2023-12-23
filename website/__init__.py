@@ -6,6 +6,8 @@ from flask_login import LoginManager
 db = SQLAlchemy()
 DB_NAME = "database.db"
 
+from .models import User, Note
+
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'aeiou'
