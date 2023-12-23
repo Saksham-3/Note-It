@@ -55,6 +55,11 @@ content%}
         {{ form.submit(class="btn btn-outline-info") }}
       </div>
     </form>
+    <a href="{{ url_for('views.home') }}"
+      ><button class="btn btn-secondary" style="display: inline-block">
+        Cancel
+      </button></a
+    >
   </div>
 </div>
 {% endblock %}
