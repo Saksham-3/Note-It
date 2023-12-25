@@ -1,0 +1,102 @@
+{% extends "base.html" %} {% block title %}Blog{% endblock %} {% block content
+%}
+<article class="media content-section">
+  <img
+    class="rounded-circle article-img"
+    src="{{ url_for('static', filename='pfp/' + post.author.image_file) }}"
+    alt=""
+  />
+  <div class="media-body">
+    <div class="article-metadata">
+      <a class="mr-2" href="#">{{ post.author.username }}</a>
+      <small class="text-muted"
+        >{{ post.date_posted.strftime('%Y-%m-%d') }}</small
+      >
+      {% if post.author == current_user %}
+      <div>
+        <a
+          class="btn btn-secondary btn-sm mt-1 mb-1"
+          href="{{ url_for('views.update_post', post_id=post.id) }}"
+          >Edit</a
+        >
+        <button
+          type="button"
+          class="btn btn-danger btn-sm m-1"
+          data-toggle="modal"
+          data-target="#deleteModal"
+        >
+          Delete
+        </button>
+      </div>
+
+      {% endif %}
+    </div>
+    <h2 class="article-title">{{ post.title }}</h2>
+    <p class="article-content">{{ post.content }}</p>
+  </div>
+  <div>
+    <a
+      class="btn btn-info"
+      href="{{ url_for('views.blog') }} "
+      style="display: inline"
+      ><svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        class="bi bi-arrow-return-left"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5"
+        />
+      </svg>
+      Return
+    </a>
+  </div>
+</article>
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="deleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <form
+          action="{{ url_for('views.delete_post', post_id=post.id) }}"
+          method="POST"
+        >
+          <input class="btn btn-danger" type="submit" value="Delete" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<head>
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static', filename='blog.css') }}"
+  />
+</head>
+{% endblock %}

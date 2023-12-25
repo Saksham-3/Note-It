@@ -4,7 +4,12 @@ content%}
 <h4 align="center">Created on {{ note_update.date }}</h4>
 
 <form action="/edit/{{ note_update.id }}" method="POST">
-  <textarea name="note" id="note" class="form-control">
+  <textarea
+    name="note"
+    id="note"
+    class="form-control"
+    style="height: 200px; width: 100%"
+  >
 {{ note_update.data }}</textarea
   >
   <br />
@@ -20,4 +25,8 @@ content%}
     ><button class="btn btn-secondary">Cancel</button></a
   >
 </div>
+<head>
+  <link rel="stylesheet" type="text/css" href="\static\main.css" />
+</head>
+
 {% endblock %}
