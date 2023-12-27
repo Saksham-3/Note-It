@@ -24,13 +24,18 @@
 {% endif %} {% for post in posts %}
 <article class="media content-section">
   <img
+    fetchpriority="high"
     class="rounded-circle article-img"
     src="{{ url_for('static', filename='pfp/' + post.author.image_file) }}"
-    alt=""
+    alt="Profile Picture"
   />
   <div class="media-body">
     <div class="article-metadata">
-      <a class="mr-2" href="#">{{ post.author.username }}</a>
+      <a
+        class="mr-2"
+        href="{{ url_for('views.user_post', username = post.author.username) }}"
+        >{{ post.author.username }}</a
+      >
       <small class="text-muted"
         >{{ post.date_posted.strftime('%Y-%m-%d') }}</small
       >

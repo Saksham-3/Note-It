@@ -1,11 +1,19 @@
 from . import db
 from flask_login import UserMixin
 from datetime import datetime
+from pytz import timezone
+
+eastern = timezone('US/Eastern')
+now_1 = datetime.now()
+now = eastern.localize(now_1)
+
+
+
 
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.String(10000))
-    date = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
+    date = db.Column(db.DateTime(timezone=True), default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))    
     
 
@@ -21,6 +29,6 @@ class User(db.Model, UserMixin):
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.now)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

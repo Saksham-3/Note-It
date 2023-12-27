@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %}Edit Note{% endblock %} {% block
 content%}
 <h1 align="center">Edit Note</h1>
-<h4 align="center">Created on {{ note_update.date }}</h4>
+<h4 align="center">Created on {{ note_update.date.strftime('%Y-%m-%d') }}</h4>
 
 <form action="/edit/{{ note_update.id }}" method="POST">
   <textarea

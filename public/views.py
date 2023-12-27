@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, abort
 from flask_login import login_required, current_user
-from .models import Note, User, Post
+from .models import Note, Post, User
 from . import db
 import json
 from .forms import UpdateAccount, BlogForm
@@ -13,7 +13,9 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    return render_template("home.html", user = current_user)
+    user = current_user
+    notes = Note.query.filter_by(user_id=user.id).order_by(Note.date.asc())
+    return render_template("home.html", user = current_user, notes = notes)
 
 @views.route('/delete-note', methods= ['POST'])
 @login_required
@@ -28,8 +30,6 @@ def delete_note():
 
     return jsonify({})
             
-    return render_template("home.html", user = current_user)
-
 @views.route('/add_note', methods = ['GET', 'POST'])
 @login_required
 def addNote():
@@ -46,6 +46,23 @@ def addNote():
             return redirect(url_for('views.home'))
     return render_template("add_note.html", user=current_user)
 
+@views.route('/edit/<int:id>', methods=['GET', 'POST'])
+def item(id):
+    form = Note()
+    note_update = Note.query.get_or_404(id)
+    if request.method == "POST":
+        note_update.data = request.form['note']
+        try:
+            db.session.commit()
+            flash("Note Successfully Updated!", "success")
+            return redirect(url_for('views.home'))
+        except:
+            db.session.commit()
+            flash("Error! Try again.", "error")
+            return render_template("edit.html", form=form, note_update = note_update)
+    else:
+        return render_template("edit.html", form=form, note_update = note_update, user = current_user)
+    
 @views.route('/post/new', methods = ['GET', 'POST'])
 @login_required
 def new_blog():
@@ -91,24 +108,6 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('views.blog'))
-
-
-@views.route('/edit/<int:id>', methods=['GET', 'POST'])
-def item(id):
-    form = Note()
-    note_update = Note.query.get_or_404(id)
-    if request.method == "POST":
-        note_update.data = request.form['note']
-        try:
-            db.session.commit()
-            flash("Note Successfully Updated!", "success")
-            return render_template("home.html", form=form, note_update = note_update, user = current_user)
-        except:
-            db.session.commit()
-            flash("Error! Try again.", "error")
-            return render_template("edit.html", form=form, note_update = note_update)
-    else:
-        return render_template("edit.html", form=form, note_update = note_update, user = current_user)
     
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
@@ -125,11 +124,20 @@ def save_picture(form_picture):
     
     return picture_fn 
 
-
 @views.route('/blog', methods=['GET', 'POST'])
 def blog():
-    posts = Post.query.all()
+    posts = Post.query.order_by(Post.date_posted.desc())
     return render_template('blog.html', user= current_user, posts= posts)
+
+@views.route('/user/<string:username>', methods=['GET', 'POST'])
+def user_post(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.filter_by(author=user)\
+        .order_by(Post.date_posted.desc())
+
+    return render_template('user_posts.html', user=user, posts= posts)
+
+
 
 
 @views.route('/account/', methods=['GET', 'POST'])
