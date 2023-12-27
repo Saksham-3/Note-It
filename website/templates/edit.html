@@ -2,7 +2,6 @@
 content%}
 <h1 align="center">Edit Note</h1>
 <h4 align="center">Created on {{ note_update.date }}</h4>
-
 <form action="/edit/{{ note_update.id }}" method="POST">
   <textarea name="note" id="note" class="form-control">
 {{ note_update.data }}</textarea

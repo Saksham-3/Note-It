@@ -1,6 +1,9 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %}
 <div class="div-container">
+  <div>
+  <button onClick="sortNote()">Sort</button>
+</div>
 <h1 align="center">Your Current Notes</h1>
 <ul class="list-group list-group-flush" id="notes">
   {% for note in user.notes %}

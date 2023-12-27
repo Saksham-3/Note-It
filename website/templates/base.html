@@ -124,7 +124,18 @@
         }).then((_res) => {
           window.location.href = "/";
         });
+      } 
+      function sortNote() {
+        fetch('/sort-note', {
+            method: 'GET'
+            // body: JSON.stringify({ userId: userId})
+        }).then((_res) => {
+          print(_res)
+          return _res.json();
+            window.location.href = "/";
+        })
       }
+
     </script>
     {% endblock %}
   </body>

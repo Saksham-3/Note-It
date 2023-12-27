@@ -7,6 +7,7 @@ from .forms import UpdateAccount
 import secrets
 from PIL import Image
 import os
+from sqlalchemy.sql import text
 
 views = Blueprint('views', __name__)
 
@@ -98,3 +99,38 @@ def account():
         form.email.data = current_user.email
 
     return render_template('account.html',image_file= image_file , user= current_user, form=form)
+
+@views.route('/sort-note', methods= ['GET'])
+@login_required
+def sort_note():
+    print(current_user.id)
+    sql_query  = "SELECT note.data as mydata FROM note INNER JOIN user ON note.user_id = user.id WHERE note.user_id = :current_user ORDER BY note.date DESC"
+    cursor = db.session.execute(text(sql_query),{'current_user' : current_user.id})
+    notess = cursor.fetchall()
+    notee = []
+    for i in range(len(notess)):
+        notee.append(notess[i][i-1])
+        user = current_user
+    return render_template('home.html', user= current_user)
+    # return result
+    # note = json.loads(request.data)
+    # noteId = note['noteId']
+    # note = Note.query.get(noteId)
+    # if note:
+    #     if note.user_id == current_user.id:
+    #         db.session.delete(note)
+    #         db.session.commit()
+    # return jsonify({note})
+    
+            
+    # return render_template("home.html", user = current_user)
+
+# @staticmethod
+# def find_handymans(query):
+#     search_job = str(query)
+
+#     sql_query =text("SELECT first_name,last_name, email, user_type,  phone, image, diplome, latitude, longitude, description FROM users, jobs WHERE users.id_job = jobs.id AND jobs.description = :x ")
+#     cursor = db.session.execute(sql_query,{'x' : search_job})
+
+#     # Returns a list of product tuples
+#     return cursor.fetchall()
