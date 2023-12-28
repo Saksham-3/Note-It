@@ -25,7 +25,7 @@
 
     <title>{% block title %}Home{% endblock %}</title>
   </head>
-  <body>
+  <body style="background-color: #fafafa">
     <nav
       class="navbar navbar-expand-lg navbar-dark"
       style="background-color: rgb(50, 82, 95)"
@@ -54,7 +54,7 @@
               aria-expanded="false"
               style="margin-right: 10px"
             >
-              Hello, {{ user.username }}
+              Hello, {{ current_user.username }}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
               <a
@@ -66,11 +66,14 @@
             </div>
           </div>
           <a class="nav-item nav-link active" id="home" href="/">Home</a>
+          <a class="nav-item nav-link active" id="home" href="/blog">Blog</a>
+
           <a class="nav-item nav-link active" id="logout" href="/logout"
             >Logout</a
           >
 
           {% else %}
+          <a class="nav-item nav-link active" id="home" href="/blog">Blog</a>
           <a class="nav-item nav-link active" id="login" href="/login">Login</a>
           <a class="nav-item nav-link active" id="signUp" href="/sign-up"
             >Sign Up</a

@@ -1,0 +1,60 @@
+{% extends "base.html" %} {% block title %}Blog{% endblock %} {% block content
+%} {% if user.is_authenticated %}
+<a href="{{ url_for('views.new_blog') }}"
+  ><button class="btn btn-primary" style="margin-top: 10px">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="currentColor"
+      class="bi bi-pencil-square"
+      viewBox="0 0 16 16"
+    >
+      <path
+        d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+      />
+      <path
+        fill-rule="evenodd"
+        d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+      />
+    </svg>
+    Create Post
+  </button></a
+>
+{% endif %} {% for post in posts %}
+<article class="media content-section">
+  <img
+    fetchpriority="high"
+    class="rounded-circle article-img"
+    src="{{ url_for('static', filename='pfp/' + post.author.image_file) }}"
+    alt="Profile Picture"
+  />
+  <div class="media-body">
+    <div class="article-metadata">
+      <a
+        class="mr-2"
+        href="{{ url_for('views.user_post', username = post.author.username) }}"
+        >{{ post.author.username }}</a
+      >
+      <small class="text-muted"
+        >{{ post.date_posted.strftime('%Y-%m-%d') }}</small
+      >
+    </div>
+    <h2>
+      <a
+        class="article-title"
+        href="{{ url_for('views.post', post_id=post.id) }}"
+        >{{ post.title }}</a
+      >
+    </h2>
+    <p class="article-content">{{ post.content }}</p>
+  </div>
+</article>
+<head>
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static', filename='blog.css') }}"
+  />
+</head>
+{% endfor %} {% endblock %}
