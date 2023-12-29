@@ -1,4 +1,4 @@
-# Note- It!
+# Note-It!
 
 Languages used:
 - Frontend - HTML. Bootstrap, Jinja Templating, and javascript
@@ -21,7 +21,7 @@ Features:
 - Project is fully responsive -  ready to be used on mobile browsers.
 
 
-![Note- It!](https://github.com/Saksham- 3/Note- It/assets/149017293/e4574a95- 5f31- 4548- b98a- 1e8f16dc866a)
+![Note- It!](https://github.com/Saksham-3/Note-It/assets/149017293/e4574a95-5f31-4548-b98a-1e8f16dc866a)
 
 
 
